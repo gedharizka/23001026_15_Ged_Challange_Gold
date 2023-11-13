@@ -1,0 +1,909 @@
+{
+	"info": {
+		"_postman_id": "eef0646f-e5dc-4cd4-930f-5efdf93892b6",
+		"name": "Mobile Secondhand",
+		"description": "[https://market-final-project.binaracademy.org/api-docs/#](https://market-final-project.binaracademy.org/api-docs/#)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11204532"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomIndonesianPhoneNumber() {\r",
+									"    const prefixOptions = [\"0811\", \"0812\", \"0813\", \"0821\", \"0822\", \"0823\", \"0851\", \"0852\", \"0853\", \"0814\", \"0815\", \"0816\", \"0855\"];\r",
+									"    const selectedPrefix = prefixOptions[Math.floor(Math.random() * prefixOptions.length)];\r",
+									"    const remainingDigits = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');\r",
+									"    return selectedPrefix + remainingDigits;\r",
+									"}\r",
+									"const randomIndonesianPhoneNumber = generateRandomIndonesianPhoneNumber();\r",
+									"pm.environment.set('random_phone_number', randomIndonesianPhoneNumber);\r",
+									"\r",
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+									"pm.environment.set(\"randomAuthName\",pm.variables.replaceIn(userName.toLowerCase()))"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "{{randomAuthName}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{randomAuthName}}@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "a1a1a1a1",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "{{random_phone_number}}",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "{{$randomStreetName}}",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"contentType": "image/jpeg",
+									"type": "file",
+									"src": "test_jpg.jpg"
+								},
+								{
+									"key": "city",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "[verner_reynolds@mail.com](https://mailto:verner_reynolds@mail.com)\n\nclementina.altenwerth@mail.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Login_seller",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json()\r",
+									"const token = response.access_token\r",
+									"\r",
+									"const id = response.id\r",
+									"\r",
+									"pm.environment.set('token_seller', token)\r",
+									"pm.environment.set('userId_seller', id)\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"emil.metz95@mail.com\",\r\n  \"password\": \"a1a1a1a1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login_buyer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json()\r",
+									"const token = response.access_token\r",
+									"\r",
+									"const id = response.id\r",
+									"\r",
+									"pm.environment.set('token_buyer', token)\r",
+									"pm.environment.set('userId_buyer', id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"clementina.altenwerth@mail.com\",\r\n  \"password\": \"a1a1a1a1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Seller-Product",
+			"item": [
+				{
+					"name": "Create Product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomIndonesianPhoneNumber() {\r",
+									"    const prefixOptions = [\"0811\", \"0812\", \"0813\", \"0821\", \"0822\", \"0823\", \"0851\", \"0852\", \"0853\", \"0814\", \"0815\", \"0816\", \"0855\"];\r",
+									"    const selectedPrefix = prefixOptions[Math.floor(Math.random() * prefixOptions.length)];\r",
+									"    const remainingDigits = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');\r",
+									"    return selectedPrefix + remainingDigits;\r",
+									"}\r",
+									"const randomIndonesianPhoneNumber = generateRandomIndonesianPhoneNumber();\r",
+									"pm.environment.set('random_phone_number', randomIndonesianPhoneNumber);\r",
+									"\r",
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+									"pm.environment.set(\"randomAuthName\",pm.variables.replaceIn(userName.toLowerCase()))"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json()\r",
+									"const produk_id = response.id\r",
+									"\r",
+									"\r",
+									"pm.environment.set('produkId_to_update',produk_id)\r",
+									"pm.environment.set('productId_buyer',produk_id)\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							},
+							{
+								"key": "access_token",
+								"value": "{{token_seller}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomProduct}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{$randomLoremLines}}",
+									"type": "text"
+								},
+								{
+									"key": "base_price",
+									"value": "100000",
+									"type": "text"
+								},
+								{
+									"key": "category_ids",
+									"value": "[6,9,17]",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "{{$randomStreetName}}",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"contentType": "image/jpeg",
+									"type": "file",
+									"src": "Testing/test_jpg.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/seller/product",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"seller",
+								"product"
+							]
+						},
+						"description": "[verner_reynolds@mail.com](https://mailto:verner_reynolds@mail.com)\n\nclementina.altenwerth@mail.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomIndonesianPhoneNumber() {\r",
+									"    const prefixOptions = [\"0811\", \"0812\", \"0813\", \"0821\", \"0822\", \"0823\", \"0851\", \"0852\", \"0853\", \"0814\", \"0815\", \"0816\", \"0855\"];\r",
+									"    const selectedPrefix = prefixOptions[Math.floor(Math.random() * prefixOptions.length)];\r",
+									"    const remainingDigits = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');\r",
+									"    return selectedPrefix + remainingDigits;\r",
+									"}\r",
+									"const randomIndonesianPhoneNumber = generateRandomIndonesianPhoneNumber();\r",
+									"pm.environment.set('random_phone_number', randomIndonesianPhoneNumber);\r",
+									"\r",
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+									"pm.environment.set(\"randomAuthName\",pm.variables.replaceIn(userName.toLowerCase()))"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The length of the get product is greater than zero\", function () {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.length).to.be.greaterThan(0, \"Users array should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const response = pm.response.json()\r",
+									"const produk_id = response[0].id\r",
+									"\r",
+									"const filterProduk = response.filter(res => res.status ===\"available\")\r",
+									"console.log({filterProduk})\r",
+									"\r",
+									"pm.environment.set('produkId_to_delete',produk_id)\r",
+									"// pm.environment.set(\"productId_toOrder\",filterProduk[0].id)\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							},
+							{
+								"key": "access_token",
+								"value": "{{token_seller}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomProduct}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{$randomLoremLines}}",
+									"type": "text"
+								},
+								{
+									"key": "base_price",
+									"value": "100000",
+									"type": "text"
+								},
+								{
+									"key": "category_ids",
+									"value": "[2,3,4]",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "{{$randomStreetName}}",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"contentType": "image/jpeg",
+									"type": "file",
+									"src": "test_jpg.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/seller/product",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"seller",
+								"product"
+							]
+						},
+						"description": "[verner_reynolds@mail.com](https://mailto:verner_reynolds@mail.com)\n\nclementina.altenwerth@mail.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product By Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomIndonesianPhoneNumber() {\r",
+									"    const prefixOptions = [\"0811\", \"0812\", \"0813\", \"0821\", \"0822\", \"0823\", \"0851\", \"0852\", \"0853\", \"0814\", \"0815\", \"0816\", \"0855\"];\r",
+									"    const selectedPrefix = prefixOptions[Math.floor(Math.random() * prefixOptions.length)];\r",
+									"    const remainingDigits = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');\r",
+									"    return selectedPrefix + remainingDigits;\r",
+									"}\r",
+									"const randomIndonesianPhoneNumber = generateRandomIndonesianPhoneNumber();\r",
+									"pm.environment.set('random_phone_number', randomIndonesianPhoneNumber);\r",
+									"\r",
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+									"pm.environment.set(\"randomAuthName\",pm.variables.replaceIn(userName.toLowerCase()))"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							},
+							{
+								"key": "access_token",
+								"value": "{{token_seller}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/seller/product/{{produkId_to_update}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"seller",
+								"product",
+								"{{produkId_to_update}}"
+							]
+						},
+						"description": "[verner_reynolds@mail.com](https://mailto:verner_reynolds@mail.com)\n\nclementina.altenwerth@mail.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomIndonesianPhoneNumber() {\r",
+									"    const prefixOptions = [\"0811\", \"0812\", \"0813\", \"0821\", \"0822\", \"0823\", \"0851\", \"0852\", \"0853\", \"0814\", \"0815\", \"0816\", \"0855\"];\r",
+									"    const selectedPrefix = prefixOptions[Math.floor(Math.random() * prefixOptions.length)];\r",
+									"    const remainingDigits = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');\r",
+									"    return selectedPrefix + remainingDigits;\r",
+									"}\r",
+									"const randomIndonesianPhoneNumber = generateRandomIndonesianPhoneNumber();\r",
+									"pm.environment.set('random_phone_number', randomIndonesianPhoneNumber);\r",
+									"\r",
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+									"pm.environment.set(\"randomAuthName\",pm.variables.replaceIn(userName.toLowerCase()))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "body"
+							},
+							{
+								"key": "access_token",
+								"value": "{{token_seller}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/seller/product/98021",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"seller",
+								"product",
+								"98021"
+							]
+						},
+						"description": "[verner_reynolds@mail.com](https://mailto:verner_reynolds@mail.com)\n\nclementina.altenwerth@mail.com"
+					},
+					"response": []
+				}
+			],
+			"description": "Status: accepted, declined, pending"
+		},
+		{
+			"name": "Buyer-Product",
+			"item": [
+				{
+					"name": "Get Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The length of the get product is greater than zero\", function () {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.length).to.be.greaterThan(0, \"Users array should not be empty\");\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json()\r",
+									"const produk_id = response[0].id\r",
+									"\r",
+									"pm.environment.set(\"produkId_to_update\",produk_id)\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/buyer/product?per_page=100&page=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buyer",
+								"product"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "100"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/buyer/product/{{produkId_to_update}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buyer",
+								"product",
+								"{{produkId_to_update}}"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Buyer-Order",
+			"item": [
+				{
+					"name": "Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{token_buyer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": {{productId_buyer}},\r\n    \"bid_price\": 5000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buyer/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buyer",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json()\r",
+									"const resLenght = response.length - 1\r",
+									"const produk_id = response[resLenght].id\r",
+									"\r",
+									"console.log({produk_id})\r",
+									"pm.environment.set(\"order_id\",produk_id)\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{token_buyer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buyer/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buyer",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{token_buyer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buyer/order/{{order_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buyer",
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{token_buyer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bid_price\": 4000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buyer/order/{{order_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buyer",
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
